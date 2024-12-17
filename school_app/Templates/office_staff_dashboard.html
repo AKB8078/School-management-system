@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Panel</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #eef2f7;
+            color: #444;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4caf50;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 10px 15px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #575757;
+        }
+
+        main {
+            padding: 20px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            max-width: 1100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        a.btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        a.btn:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav a {
+                float: none;
+                text-align: center;
+            }
+
+            table th, table td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Staff Management Panel</h1>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="{% url 'add_student' %}">Add Student</a>
+        <a href="{% url 'add_fee' %}">Add Fee Record</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Student List -->
+        <div class="section">
+            <h2>Student Information</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.roll_number }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No students available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Fees History -->
+        <div class="section">
+            <h2>Fees Records</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Fee Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fee in fees_history %}
+                        <tr>
+                            <td>{{ fee.student.name }}</td>
+                            <td>{{ fee.fee_type }}</td>
+                            <td>{{ fee.amount }}</td>
+                            <td>{{ fee.payment_date }}</td>
+                            <td>
+                                <a href="{% url 'edit_fee' fee.id %}">Edit</a> |
+                                <a href="{% url 'delete_fee' fee.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No fee records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Library Section -->
+        <div class="section">
+            <h2>Library Records</h2>
+            <ul>
+                {% for record in library_records %}
+                <li>{{ record.book_name }} - {{ record.status }}</li>
+                {% empty %}
+                <li>No library records available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Office Staff Panel. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

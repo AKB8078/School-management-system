@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Create a New Account</h1>
+        </header>
+
+        <main>
+            <section class="registration-form">
+                <form method="post" class="form-container">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="submit-btn">Register</button>
+                </form>
+            </section>
+
+            <section class="back-link">
+                <a href="{% url 'admin_dashboard' %}" class="back-btn">Go Back to Dashboard</a>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 MyWebsite. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

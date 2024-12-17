@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Control Panel</title>
+    {% load static %}
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Container */
+        .dashboard {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .dashboard h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* Sections */
+        .card {
+            background-color: #ecf0f1;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Library Control Panel</h1>
+
+        <!-- Student Info Section -->
+        <div class="card">
+            <h2>Registered Students</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Roll No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.roll_number }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No student records available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Library Records Section -->
+        <div class="card">
+            <h2>Librarian Dashboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
+                        <th>Book Name</th>
+                        <th>Borrow Date</th>
+                        <th>Return Date</th>
+                        <th>Book Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in library_records %}
+                        <tr>
+                            <td>{{ record.student.name }}</td>  <!-- Display student's name -->
+                            <td>{{ record.student.roll_number }}</td>  <!-- Display student's roll number -->
+                            <td>{{ record.book_name }}</td>  <!-- Display book name -->
+                            <td>{{ record.borrow_date }}</td>  <!-- Display borrow date -->
+                            <td>{{ record.return_date }}</td>  <!-- Display return date -->
+                            <td>{{ record.book_status }}</td>  <!-- Display book status -->
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">No library records found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Logout -->
+        <div class="card" style="text-align: center;">
+            <a href="{% url 'logout' %}" class="btn">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 Library Management Portal. All Rights Reserved.
+    </footer>
+</body>
+</html>

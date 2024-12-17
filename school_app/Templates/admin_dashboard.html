@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/static.css' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f1f1;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            color: #4CAF50;
+            font-size: 36px;
+            margin: 0;
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-size: 18px;
+            margin: 10px 0;
+            padding: 12px 24px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease;
+        }
+        .nav-links a:hover {
+            background-color: #4CAF50;
+            color: #ffffff;
+        }
+        .nav-links button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .nav-links button:hover {
+            background-color: #45a049;
+        }
+        .messages {
+            margin-top: 30px;
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+        .messages.active {
+            display: block;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Dashboard</h1>
+        </header>
+
+        <div class="nav-links">
+            <!-- Button to register a new user -->
+            <a href="{% url 'register_user' %}">
+                <button type="button">Register New User</button>
+            </a>
+
+            <a href="{% url 'manage_users' %}">Manage Users</a>
+
+            <a href="{% url 'office_staff_dashboard' %}">Go to Office Staff Dashboard</a>
+
+            <a href="{% url 'librarian_dashboard' %}">Go to Librarian Dashboard</a>
+        </div>
+
+        {% if messages %}
+        <div class="messages active">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <footer>
+            <a href="{% url 'logout' %}" style="color: #4CAF50;">Logout</a>
+        </footer>
+    </div>
+</body>
+</html>
