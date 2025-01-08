@@ -2,15 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Record</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Center Container */
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        /* Buttons */
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #3498db;
+            background-color: #ecf0f1;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #d0e6f8;
+            color: #2980b9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            button, a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Confirm Deletion</h1>
-    <p>Are you sure you want to delete the record: <strong>{{ record.book_name }}</strong>?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Confirm</button>
-        <a href="{% url 'librarian_dashboard' %}">Cancel</a>
-    </form>
+    <div class="container">
+        <h1>Confirm Deletion</h1>
+        <p>Are you sure you want to delete the record: <strong>{{ record.book_name }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Confirm</button>
+            <a href="{% url 'librarian_dashboard' %}">Cancel</a>
+        </form>
+    </div>
 </body>
 </html>

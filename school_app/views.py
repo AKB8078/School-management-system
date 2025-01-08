@@ -31,14 +31,25 @@ def register_user(request):
     return render(request, 'register_user.html', {'form': form})
 
 # HTML-based login view
+from django.middleware.csrf import get_token
+
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        # Retrieve CSRF token for debugging purposes
+        csrf_token = get_token(request)
+        print(f"CSRF Token for POST request: {csrf_token}")  # Debugging CSRF token
+        
+        # Get username and password from POST request
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        # Authenticate user
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
-            print(f"Authenticated user: {user}, Role: {user.role}")  # Debugging
+            print(f"Authenticated user: {user}, Role: {user.role}")  # Debugging user info
             login(request, user)
+            
             # Redirect based on user role
             if user.role == 'admin':
                 return redirect('admin_dashboard')
@@ -47,8 +58,10 @@ def login_view(request):
             elif user.role == 'librarian':
                 return redirect('librarian_dashboard')
         else:
-            print("Authentication failed")  # Debugging
+            print("Authentication failed")  # Debugging login failure
             messages.error(request, 'Invalid username or password')
+    
+    # Render the login page
     return render(request, 'login.html')
 
 @login_required
@@ -205,11 +218,11 @@ def librarian_dashboard(request):
         'library_records': library_records,
     }
     return render(request, 'librarian_dashboard.html', context)
-
+from django.middleware.csrf import get_token
 def logout_view(request):
-    logout(request)
-    return redirect('login')
-
+    logout(request)  # Log out the user
+    get_token(request)  # Generate a fresh CSRF token
+    return redirect('login')  # Redirect to the login page
 # CustomUser ViewSet
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -290,14 +303,23 @@ def librarian_dashboard(request):
     # Fetching library records along with related student details
     library_records = LibraryHistory.objects.select_related('student').all()
 
+    # Fetching registered students
+    students = Student.objects.all()
+
     context = {
-        'library_records': library_records
+        'library_records': library_records,
+        'students': students,
+        'is_admin': request.user.role == 'admin',  # Pass whether the user is admin or not
     }
     return render(request, 'librarian_dashboard.html', context)
 
-
-# View to Add New Library Record
+# View to Add New Library Record (only accessible by admin)
+@login_required
 def add_library_record(request):
+    if not request.user.role == 'admin':
+        messages.error(request, "You are not authorized to perform this action.")
+        return redirect('librarian_dashboard')
+
     if request.method == 'POST':
         form = LibraryHistoryForm(request.POST)
         if form.is_valid():
@@ -307,9 +329,15 @@ def add_library_record(request):
         form = LibraryHistoryForm()
     return render(request, 'add_library_record.html', {'form': form})
 
-# View to Edit Existing Library Record
+# View to Edit Existing Library Record (only accessible by admin)
+@login_required
 def edit_library_record(request, pk):
     library_record = get_object_or_404(LibraryHistory, pk=pk)
+    
+    if not request.user.role == 'admin':
+        messages.error(request, "You are not authorized to perform this action.")
+        return redirect('librarian_dashboard')
+
     if request.method == 'POST':
         form = LibraryHistoryForm(request.POST, instance=library_record)
         if form.is_valid():
@@ -319,9 +347,15 @@ def edit_library_record(request, pk):
         form = LibraryHistoryForm(instance=library_record)
     return render(request, 'edit_library_record.html', {'form': form, 'record': library_record})
 
-# View to Delete a Library Record
+# View to Delete a Library Record (only accessible by admin)
+@login_required
 def delete_library_record(request, pk):
     library_record = get_object_or_404(LibraryHistory, pk=pk)
+    
+    if not request.user.role == 'admin':
+        messages.error(request, "You are not authorized to perform this action.")
+        return redirect('librarian_dashboard')
+
     if request.method == 'POST':
         library_record.delete()
         return redirect('librarian_dashboard')

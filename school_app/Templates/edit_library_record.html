@@ -2,15 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Library Record</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Center Container */
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        button {
+            background-color: #27ae60;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #219150;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #1d669e;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Edit Library Record</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update Record</button>
-    </form>
-    <a href="{% url 'librarian_dashboard' %}">Back to Dashboard</a>
+    <div class="container">
+        <h1>Edit Library Record</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Record</button>
+        </form>
+        <a href="{% url 'librarian_dashboard' %}">Back to Dashboard</a>
+    </div>
 </body>
 </html>

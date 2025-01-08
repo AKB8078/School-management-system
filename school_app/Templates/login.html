@@ -11,81 +11,106 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e0e7ff;
+            background: #f4f7fb; /* Soft light grayish-blue background */
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            color: #333;
         }
 
         .access-wrapper {
             background: #ffffff;
-            width: 350px;
+            width: 380px;
             border-radius: 12px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .access-wrapper:hover {
+            transform: translateY(-5px);
         }
 
         .access-header {
-            background-color: #5c6bc0;
+            background-color: #4e73df; /* Professional blue */
             color: #ffffff;
             text-align: center;
-            padding: 15px 0;
-            font-size: 1.5rem;
+            padding: 20px;
+            font-size: 1.6rem;
             font-weight: bold;
+            border-bottom: 3px solid #2e59a4; /* Darker blue */
         }
 
         .access-body {
-            padding: 25px;
+            padding: 30px;
         }
 
         .access-body label {
             display: block;
-            font-size: 0.9rem;
-            color: #555;
+            font-size: 0.95rem;
+            color: #333;
             margin-bottom: 8px;
         }
 
         .access-body input[type="text"],
         .access-body input[type="password"] {
             width: 100%;
-            padding: 8px 10px;
-            font-size: 0.9rem;
-            border: 1px solid #d0d0d0;
-            border-radius: 6px;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
             box-sizing: border-box;
-            margin-bottom: 15px;
-            transition: border-color 0.2s ease-in;
+            transition: all 0.3s ease;
         }
 
         .access-body input[type="text"]:focus,
         .access-body input[type="password"]:focus {
-            border-color: #5c6bc0;
+            border-color: #4e73df;
             outline: none;
+            box-shadow: 0 0 8px rgba(78, 115, 223, 0.3);
         }
 
         .access-body button {
-            background-color: #5c6bc0;
+            background-color: #4e73df;
             color: #ffffff;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            padding: 10px;
+            padding: 12px;
             border: none;
             width: 100%;
             cursor: pointer;
-            border-radius: 6px;
-            transition: background-color 0.3s;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .access-body button:hover {
-            background-color: #3949ab;
+            background-color: #2e59a4;
+            transform: translateY(-3px);
         }
 
         .access-messages {
             margin-top: 20px;
             text-align: center;
             color: #e53935;
+            font-size: 1rem;
+        }
+
+        .access-body p {
+            text-align: center;
+            margin-top: 20px;
             font-size: 0.9rem;
+        }
+
+        .access-body p a {
+            color: #4e73df;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .access-body p a:hover {
+            color: #2e59a4;
         }
     </style>
 </head>
@@ -113,6 +138,8 @@
                 {% endfor %}
             </div>
             {% endif %}
+
+            
         </div>
     </div>
 </body>

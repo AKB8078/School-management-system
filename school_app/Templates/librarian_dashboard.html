@@ -6,103 +6,159 @@
     <title>Library Control Panel</title>
     {% load static %}
     <style>
-        /* General Reset */
-        * {
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            flex-direction: column;
         }
 
-        /* Container */
         .dashboard {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            width: 90%;
             max-width: 1200px;
-            margin: auto;
-        }
-
-        .dashboard h1 {
-            text-align: center;
-            font-size: 2rem;
-            color: #2c3e50;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            flex: 1;
+            margin-top: 20px;
             margin-bottom: 20px;
         }
 
-        /* Sections */
+        .dashboard:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
         .card {
-            background-color: #ecf0f1;
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
         }
 
         .card h2 {
-            font-size: 1.4rem;
-            color: #34495e;
-            margin-bottom: 10px;
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
-        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #fff;
-            margin-top: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         table th, table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
+            padding: 18px;
+            text-align: left;
+            border-bottom: 2px solid #ecf0f1;
         }
 
         table th {
             background-color: #3498db;
-            color: #fff;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            color: white;
+            font-weight: 600;
         }
 
         table tr:hover {
-            background-color: #e0f7fa;
+            background-color: #ecf0f1;
         }
 
-        /* Buttons */
         .btn {
-            display: inline-block;
-            background-color: #e74c3c;
+            background-color: #3498db;
             color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
+            padding: 12px 20px;
             text-decoration: none;
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 16px;
             text-align: center;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s;
         }
 
         .btn:hover {
-            background-color: #c0392b;
+            background-color: #1abc9c;
+            transform: translateY(-2px);
         }
 
-        /* Footer */
-        footer {
+        .add-btn {
+            background-color: #16a085;
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+
+        .add-btn:hover {
+            background-color: #1abc9c;
+        }
+
+        .card-footer {
             text-align: center;
             margin-top: 20px;
-            color: #777;
-            font-size: 0.9rem;
+        }
+
+        footer {
+            background-color: #3498db;
+            color: #fff;
+            font-size: 14px;
+            padding: 15px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #16a085;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                width: 95%;
+                padding: 25px;
+            }
+
+            table th, table td {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
@@ -110,14 +166,58 @@
     <div class="dashboard">
         <h1>Library Control Panel</h1>
 
-        <!-- Student Info Section -->
+        <div class="card">
+            <h2>Library Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
+                        <th>Book Name</th>
+                        <th>Borrow Date</th>
+                        <th>Return Date</th>
+                        <th>Book Status</th>
+                        {% if request.user.role == 'admin' %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in library_records %}
+                        <tr>
+                            <td>{{ record.student.name }}</td>
+                            <td>{{ record.student.roll_number }}</td>
+                            <td>{{ record.book_name }}</td>
+                            <td>{{ record.borrow_date }}</td>
+                            <td>{{ record.return_date }}</td>
+                            <td>{{ record.book_status }}</td>
+                            {% if request.user.role == 'admin' %}
+                                <td>
+                                    <a href="{% url 'edit_library_record' record.id %}" class="btn">Edit</a>
+                                    <a href="{% url 'delete_library_record' record.id %}" class="btn">Delete</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">No library records found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if request.user.role == 'admin' %}
+                <a href="{% url 'add_library_record' %}" class="btn add-btn">Add Library Record</a>
+            {% endif %}
+        </div>
+
+        <!-- Student Records Section -->
         <div class="card">
             <h2>Registered Students</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Roll No.</th>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,55 +228,28 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="2">No student records available.</td>
+                            <td colspan="2">No students registered.</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <!-- Library Records Section -->
-        <div class="card">
-            <h2>Librarian Dashboard</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Roll Number</th>
-                        <th>Book Name</th>
-                        <th>Borrow Date</th>
-                        <th>Return Date</th>
-                        <th>Book Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for record in library_records %}
-                        <tr>
-                            <td>{{ record.student.name }}</td>  <!-- Display student's name -->
-                            <td>{{ record.student.roll_number }}</td>  <!-- Display student's roll number -->
-                            <td>{{ record.book_name }}</td>  <!-- Display book name -->
-                            <td>{{ record.borrow_date }}</td>  <!-- Display borrow date -->
-                            <td>{{ record.return_date }}</td>  <!-- Display return date -->
-                            <td>{{ record.book_status }}</td>  <!-- Display book status -->
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="6">No library records found.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- Admin Dashboard Button -->
+        <div class="card-footer">
+            <a href="{% url 'admin_dashboard' %}" class="btn">Go to Admin Dashboard</a>
         </div>
 
         <!-- Logout -->
-        <div class="card" style="text-align: center;">
+        <div class="card-footer">
             <a href="{% url 'logout' %}" class="btn">Log Out</a>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        &copy; 2024 Library Management Portal. All Rights Reserved.
+        <p>&copy; 2024 Library Management Portal. All Rights Reserved.</p>
+        <p><a href="#privacy-policy">Privacy Policy</a> | <a href="#terms-of-use">Terms of Use</a></p>
     </footer>
 </body>
 </html>
